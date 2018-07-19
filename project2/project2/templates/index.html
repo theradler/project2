@@ -15,8 +15,8 @@
 function init() {
 var channel = ['General','Random','Status']
         localStorage.setItem("channel_list", JSON.stringify(channel));
-        loadUsername()
-          loadChannels()
+    loadUsername()
+    getChannelsAjax(); 
           establishUserProfile();
         }
 
@@ -28,21 +28,22 @@ function establishUserProfile() {
 }
 
 function loadChannels() {
-var channel = JSON.parse(localStorage.getItem("channel_list"));
+        var channel = JSON.parse(localStorage.getItem("channel_list"));
         var text = "";
-        var i;
-for (i = 0; i < channel.length; i++) {
-        text += channel[i] + "<br>";
-    }
-    document.getElementById("channelList").innerHTML = text;
+        var Chann
+    for (var i = 0; i < channel.length; i++) {
+         
+             text += channel[i] + "<br>";}
+        document.getElementById("channelList").innerHTML = text;
   }
 
 function addChannel() {
-var newChannel = document.getElementById("channel_input_field").value
+         var newChannel = document.getElementById("channel_input_field").value
          var channel = JSON.parse(localStorage.getItem("channel_list"));
          channel.push(document.getElementById("channel_input_field").value)
+         console.log(channel)
          localStorage.setItem("channel_list", JSON.stringify(channel))
-         loadChannels()
+         getChannelsAjax();
 
         }
 
@@ -59,18 +60,23 @@ document.getElementById("localMem").innerHTML = localStorage.getItem("username")
 
         }
 
-function ajaxRequest() {
-    var xHttpRequest = new XMLHttpRequest();
-    xHttpRequest.onreadystatechange = () => {
-        if (xHttpRequest.readyState == XMLHttpRequest.DONE && xHttpRequest.status == 200) {
-        document.getElementById('ajaxReturnArea').innerHTML = "Hey this is ajax bitch"
+    function getChannelsAjax() {
+        var xHttpRequest = new XMLHttpRequest();
+        var text = ""; 
+        xHttpRequest.onreadystatechange = () => {
+            if (xHttpRequest.readyState == XMLHttpRequest.DONE && xHttpRequest.status == 200) {
+                var channel = JSON.parse(localStorage.getItem("channel_list"));
+                for (i = 0; i < channel.length; i++) {
+                    text += channel[i] + "<br>";
+                }
+                document.getElementById("channelList").innerHTML = text;
+            }
+        };
+        xHttpRequest.open('GET', '/', true);
+        xHttpRequest.send();
     }
-    };
-    xHttpRequest.open('GET', '/', true);
-    xHttpRequest.send();
 
-
-}
+    
 
 function messageJsonBuilder(channel, user, message) {
     var messageObject = {};
@@ -166,14 +172,13 @@ function getMessages() {
 </head>
 
 <body>
-    <div class="container">
+    <div class="container-fluid" >
         <div class="row">
-            <div class="col-md-3 sidebar">
+            <div class="col-md-2 sidebar style="background-color:red;">
                 <h1>Channels: </h1>
                 <form id="new_channel_form">
                     <input type="text" id="channel_input_field">
-                    <button onclick="addChannel()">Add Channel</button>
-
+                    <input type="button" onclick="addChannel()" value="Add Channel"/>
                 </form>
                 <p id="channelList"></p>
             </div>
@@ -187,7 +192,7 @@ function getMessages() {
 
         </div>
     </div>
-    <form>
+    <!--<form>
         Username: <br>
         <input type="text" id="username_field">
     </form>
@@ -219,7 +224,7 @@ function getMessages() {
             <a href="#" class="btn">Close</a>
             <a href="#" class="btn btn-primary">Save changes</a>
         </div>
-    </div>
+    </div>-->
 </body>
 
 </html>
