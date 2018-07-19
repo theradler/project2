@@ -1,105 +1,157 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<!-- BS JavaScript -->
+<script type="text/javascript" src="js/bootstrap.js"></script>
+<!-- Have fun using Bootstrap JS -->
 <script src="../functions.js" type="text/javascript"></script>
-<script>
+
+<script type="text/javascript">
 
     document.addEventListener('DOMContentLoaded', init)
 
 
-  function init() {
-    var channel = ['General','Random','Status']
-    localStorage.setItem("channel_list", JSON.stringify(channel));
-    loadUsername()
-    loadChannels()
-  }
+function init() {
+var channel = ['General','Random','Status']
+        localStorage.setItem("channel_list", JSON.stringify(channel));
+        loadUsername()
+          loadChannels()
+          establishUserProfile();
+        }
 
-  function loadChannels() {
-    var channel = JSON.parse(localStorage.getItem("channel_list"));
-    var text = "";
-    var i;
-    for (i = 0; i < channel.length; i++) {
-      text += channel[i] + "<br>";
+function establishUserProfile() {
+    if (localStorage.getItem("username") == null) {
+        $('#myModal').modal('show')
+        console.log('Modal will fire');
+}
+}
+
+function loadChannels() {
+var channel = JSON.parse(localStorage.getItem("channel_list"));
+        var text = "";
+        var i;
+for (i = 0; i < channel.length; i++) {
+        text += channel[i] + "<br>";
     }
     document.getElementById("channelList").innerHTML = text;
   }
 
 function addChannel() {
-   var newChannel = document.getElementById("channel_input_field").value
-   var channel = JSON.parse(localStorage.getItem("channel_list"));
-   channel.push(document.getElementById("channel_input_field").value)
-   localStorage.setItem("channel_list", JSON.stringify(channel))
-   loadChannels()
+var newChannel = document.getElementById("channel_input_field").value
+         var channel = JSON.parse(localStorage.getItem("channel_list"));
+         channel.push(document.getElementById("channel_input_field").value)
+         localStorage.setItem("channel_list", JSON.stringify(channel))
+         loadChannels()
 
-  }
-
-  
-  function loadUsername() {
-    if (localStorage.getItem("username") != null) {
-      document.getElementById("localMem").innerHTML = localStorage.getItem("username")
-    }
-  }
-
-  function saveUserName() {
-    localStorage.setItem("username", document.getElementById("username_field").value)
-    document.getElementById("localMem").innerHTML = localStorage.getItem("username")
-
-    }
-
-    function ajaxRequest() {
-        var xHttpRequest = new XMLHttpRequest();
-        xHttpRequest.onreadystatechange = () => {
-            if (xHttpRequest.readyState == XMLHttpRequest.DONE && xHttpRequest.status == 200) {
-                document.getElementById('ajaxReturnArea').innerHTML = "Hey this is ajax bitch"
-            }
-        };
-        xHttpRequest.open('GET', '/', true);
-        xHttpRequest.send();
-
-        
-    }
-
-    function messageJsonBuilder(channel, user, message) {
-        var messageObject = {};
-        messageObject.channel = channel;
-        messageObject.user = user;
-        messageObject.timestamp = Date.getTime();
-        return messageObject;
-                
-    }
-
-    function messageSender() {
-        var 
-    }
-
-
-    function getMessages() {
-        var channel = "General"
-        var messages = null 
-        var messageXChannel = JSON.parse(localStorage.getItem("messageXChannel"))
-        messages = messageXChannel.filter(messageXChannel => { return messageXChannel.channel.name == channel})
-        messages = messageXChannel[0].messages 
-        for (message in  messages) {
-            renderMessages(messages[message]);
         }
 
+
+function loadUsername() {
+if (localStorage.getItem("username") != null) {
+        document.getElementById("localMem").innerHTML = localStorage.getItem("username")
+    }
+    }
+
+function saveUserName() {
+        localStorage.setItem("username", document.getElementById("username_field").value)
+document.getElementById("localMem").innerHTML = localStorage.getItem("username")
+
+        }
+
+function ajaxRequest() {
+    var xHttpRequest = new XMLHttpRequest();
+    xHttpRequest.onreadystatechange = () => {
+        if (xHttpRequest.readyState == XMLHttpRequest.DONE && xHttpRequest.status == 200) {
+        document.getElementById('ajaxReturnArea').innerHTML = "Hey this is ajax bitch"
+    }
+    };
+    xHttpRequest.open('GET', '/', true);
+    xHttpRequest.send();
+
+
+}
+
+function messageJsonBuilder(channel, user, message) {
+    var messageObject = {};
+    messageObject.channel = channel;
+    messageObject.user = user;
+    messageObject.timestamp = new Date().getTime();
+    messageObject.message = message;
+    return messageObject;
+
+}
+
+function messageSender(channel, user, message) {
+    var newMessage = messageJsonBuilder(channel = channel, user = user, message = message);
+    var messageList = []
+    messageList = localStorage.getItem("messageList");
+    console.log(messageList);
+    if (messageList != null) {
+        messageList = JSON.parse(localStorage.getItem("messageList"));
+    }
+    else {
+        messageList = [];
+    }
+    messageList = apply100Limit(messageList, newMessage.channel);
+    messageList.push(newMessage);
+    localStorage.setItem("messageList", JSON.stringify(messageList));
+
+}
+
+function SubmitNewMessage() {
+    var newMessageText = document.getElementById("message_post_field").value
+    var currentUser = localStorage.getItem("username");
+    var currentChannel = "General";
+    messageSender(currentChannel, currentUser, newMessageText);
+}
+
+function apply100Limit(messageList, channel) {
+    return messageList;
+}
+
+function InsertTestMessage() {
+        for (i = 0; i < 10; i++) {
+        messageSender();
+    }
+}
+
+function filterByChannel(channel, messageList) {
+    return messageList.filter(message =>  message.channel == channel);
+}
+
+
+
+
+function getMessages() {
+    var channel = "General"
+    var messageList = localStorage.getItem("messageList")
+    if (messageList != null) {
+        messageList = JSON.parse(messageList);
+    }
+    messageList = filterByChannel(channel, messageList);
+    for (messageKey in messageList) {
+        renderMessages(messageList[messageKey].message)
+    }
+
     }
 
 
-    function addMessage() {
-        var channel = "General";
-        var inputMessage = "New Message"
-        var messageXChannel = JSON.parse(localStorage.getItem("messageXChannel"));
-        var channelMessages = messageXChannel.filter((messageXChannel) => { return messageXChannel.channel == channel });
-        localStorage.setItem("temp", JSON.stringify(channelMessages));
-    }
+//function addMessage() {
+        //    var channel = "General";
+        //    var inputMessage = "New Message"
+        //    var messageXChannel = JSON.parse(localStorage.getItem("messageXChannel"));
+        //    var channelMessages = messageXChannel.filter((messageXChannel) => { return messageXChannel.channel == channel });
+        //    localStorage.setItem("temp", JSON.stringify(channelMessages));
+        //}
 
-    function renderMessages(message) {
-        const post = document.createElement('div');
-        post.className = 'message';
-        post.innerHTML = message
+        function renderMessages(message) {
+            const post = document.createElement('div');
+            post.className = 'message';
+            post.innerHTML = message
 
-        document.querySelector('#messages').append(post); 
-    }
+            document.querySelector('#messages').append(post);
+        }
 
 
 
@@ -110,10 +162,31 @@ function addChannel() {
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
 </head>
 
 <body>
-    {{ channel_list }}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 sidebar">
+                <h1>Channels: </h1>
+                <form id="new_channel_form">
+                    <input type="text" id="channel_input_field">
+                    <button onclick="addChannel()">Add Channel</button>
+
+                </form>
+                <p id="channelList"></p>
+            </div>
+            <div class="col-md-9 col-md-offset-3 content">
+                <div id="messages">
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+        </div>
+    </div>
     <form>
         Username: <br>
         <input type="text" id="username_field">
@@ -122,32 +195,31 @@ function addChannel() {
     <div>
         <h1>Username: </h1>
         <h2 id="localMem"></h2>
-
-
-        <form id="new_channel_form">
-            Channel: <br>
-            <input type="text" id="channel_input_field">
-        </form>
-        <button onclick="addChannel()">Add Channel</button>
-
-
-        <h1>Channels: </h1>
-        <p id="channelList"></p>
-
-        </h1>
     </div>
     <div id="demo">
-        <button type="button" onclick="makeChannelWithMessage()">Make Ajax Request</button>
+        <button type="button" onclick="InsertTestMessage()">Make Ajax Request</button>
         <button type="button" onclick="getMessages()">Get Messages</button>
-        <button type="button" onclick="addMessage()">Add Messages</button>
+        <br />
+        <input type="text" id="message_post_field" />
+        <button type="button" onclick="SubmitNewMessage()">Add Messages</button>
     </div>
     <div id="ajaxReturnArea">
 
     </div>
 
-   <div id="messages">
-
-   </div>
+    <div class="modal hide fade" id="myModal">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">×</a>
+            <h3>Modal header</h3>
+        </div>
+        <div class="modal-body">
+            <p>One fine body…</p>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn">Close</a>
+            <a href="#" class="btn btn-primary">Save changes</a>
+        </div>
+    </div>
 </body>
 
 </html>
