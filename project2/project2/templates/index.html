@@ -16,7 +16,7 @@ function init() {
 var channel = ['General','Random','Status']
         localStorage.setItem("channel_list", JSON.stringify(channel));
     loadUsername()
-    getChannelsAjax(); 
+    getChannelsAjax();
           establishUserProfile();
         }
 
@@ -32,7 +32,7 @@ function loadChannels() {
         var text = "";
         var Chann
     for (var i = 0; i < channel.length; i++) {
-         
+
              text += channel[i] + "<br>";}
         document.getElementById("channelList").innerHTML = text;
   }
@@ -62,21 +62,27 @@ document.getElementById("localMem").innerHTML = localStorage.getItem("username")
 
     function getChannelsAjax() {
         var xHttpRequest = new XMLHttpRequest();
-        var text = ""; 
+        var text = "";
         xHttpRequest.onreadystatechange = () => {
             if (xHttpRequest.readyState == XMLHttpRequest.DONE && xHttpRequest.status == 200) {
                 var channel = JSON.parse(localStorage.getItem("channel_list"));
                 for (i = 0; i < channel.length; i++) {
-                    text += channel[i] + "<br>";
-                }
-                document.getElementById("channelList").innerHTML = text;
+                    var li = document.createElement('li');
+                    var a = document.createElement('a');
+                    var linkText = document.createTextNode(channel[i]);
+                    a.appendChild(linkText);
+                    a.id = "channel-selector";
+                    a.href = "selectChannel()"
+                    li.appendChild(a);
+                    document.getElementById("channelList").appendChild(li);
+              }
             }
         };
         xHttpRequest.open('GET', '/', true);
         xHttpRequest.send();
     }
 
-    
+
 
 function messageJsonBuilder(channel, user, message) {
     var messageObject = {};
@@ -174,13 +180,13 @@ function getMessages() {
 <body>
     <div class="container-fluid" >
         <div class="row">
-            <div class="col-md-2 sidebar style="background-color:red;">
+            <div class="col-md-2 sidebar" style="background-color:red;">
                 <h1>Channels: </h1>
                 <form id="new_channel_form">
                     <input type="text" id="channel_input_field">
                     <input type="button" onclick="addChannel()" value="Add Channel"/>
                 </form>
-                <p id="channelList"></p>
+                <ul id="channelList"></ul>
             </div>
             <div class="col-md-9 col-md-offset-3 content">
                 <div id="messages">
