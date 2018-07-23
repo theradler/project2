@@ -46,12 +46,15 @@ body {
 #messageDiv {
     height:100vh;
 }
+.speakerLink {
+    height:35px;
+}
 #channelSection {
     border-right: 1px dashed #333;
 }
 
 .messages {
-    padding-bottom: 10px;
+    padding-bottom: 10%;
 }
 #emptyMessagesMessage {
     vertical-align: middle;

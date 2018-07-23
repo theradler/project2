@@ -3,10 +3,30 @@ function addChannel() {
     var newChannel = document.getElementById("channel_input_field").value
     //get current channels
     var channel = JSON.parse(localStorage.getItem("channelList"));
-    //add new channel to list of channels
-    channel.push(document.getElementById("channel_input_field").value)
-    //return channel list for socket io to send to server 
+    //validate that the channel doesn't already exist or is empty
+    if (channel.includes(newChannel)) {
+        channelAlert("You can't Submit Duplicate Channels");
+        return channel;
+    }
+    else if (isNullOrEmpty(newChannel)) {
+        channelAlert("You can't Submit Empty Channels")
+        return channel;
+    }
+    else {
+        //add new channel to list of channels
+        channel.push(document.getElementById("channel_input_field").value)
+        //return channel list for socket io to send to server 
+    }
     return channel
+}
+function channelAlert(errorMessage) {
+    document.getElementById('alertSection').innerHTML = '';
+    var alert = document.createElement('div');
+    alert.setAttribute('class', "alert alert-danger alert-dismissible");
+    alert.setAttribute('role', 'alert');
+    alert.setAttribute.id = "channelALert";
+    alert.appendChild(document.createTextNode(errorMessage));
+    document.getElementById('alertSection').appendChild(alert);
 }
 
 function selectCurrentChannel(attribute) {
@@ -50,3 +70,14 @@ function boldDefaultChannel() {
     }
   
 };
+
+function isNullOrEmpty(string) {
+    var result = true;
+    if (string) {
+        if (typeof (value) == 'string') {
+            if (value.length > 0)
+                result = false;
+        }
+    }
+    return result;
+}

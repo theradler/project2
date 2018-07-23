@@ -9,10 +9,12 @@
 <script type="text/javascript" src="../static/scripts/messageFunctions.js"></script>
 <script type="text/javascript" src="../static/scripts/channelFunctions.js"></script>
 <script type="text/javascript" src="../static/scripts/usernameFunction.js"></script>
+<script type="text/javascript" src="../static/scripts/personalTouch.js"></script>
 <script type="text/javascript">
     var socket = socketInit();
 
     var init = function (socket) {
+        textToSpeech();
         socketListen(socket);
         if (localStorage.getItem('username')) {
             renderKnownUser();
@@ -24,6 +26,7 @@
         displayMessages();
         document.getElementById("addChannelButton").addEventListener('click', () => { socketAddChannel(socket) });
         document.getElementById("messagePostButton").addEventListener('click', () => { socketSendMessage(socket) });
+
 
     };
     document.addEventListener('DOMContentLoaded', function () {
@@ -47,6 +50,7 @@
                     <div class="col-xs-2 sidebar" id="channelSection">
                         <div class="affix">
                             <h1>Channels: </h1>
+                            <div id="alertSection"></div>
                             <form id="new_channel_form">
                                 <input type="text" id="channel_input_field">
                                 <input type="button" id="addChannelButton" value="Add Channel" />
@@ -66,11 +70,9 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col" id="username">
-                        <!--<input type="text" id="usernameEnterField" />-->
-                        <!--<button type="button" class="btn btn-outline-light" onclick="saveUserName()">Submit Username</button>-->
                     </div>
                     <div class="col" id="messageSection">
-                        <input type="text" id="messagePostField" />
+                        <input type="text" id="messagePostField" onkeyup="validateMessage()"/>
                         <button type="button" class="btn btn-outline-light" id="messagePostButton">Post a Message</button>
                     </div>
                 </div>

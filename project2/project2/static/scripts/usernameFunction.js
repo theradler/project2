@@ -1,15 +1,10 @@
 
-//function loadUsername() {
-//    if (localStorage.getItem("username") != null) {
-//        document.getElementById("username").innerHTML = localStorage.getItem("username")
-//    }
-//}
-
 function saveUsername() {
     var username = document.getElementById("usernameEnterField").value
     localStorage.setItem("username", username);
     renderKnownUser();
-    enablePostMessageButton();
+    disablePostMessageButton("Please enter text in order to send message")
+
 }
 
 function logoutUsername() {
