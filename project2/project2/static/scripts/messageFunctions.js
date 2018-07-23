@@ -151,6 +151,7 @@ function enablePostMessageButton() {
 
 }
 
+//message validator, makes sure you can't post an empty string, fires off an onclick event procedurally created 
 function validateMessage() {
     var messagePostField = document.getElementById('messagePostField');
     if (messagePostField.value.length > 0 && (localStorage.getItem('username'))) {
@@ -164,7 +165,7 @@ function validateMessage() {
 function filterByChannel(channel, messageList) {
     return messageList.filter(message => message.channel == channel);
 }
-
+//utilitys for making guides that enabled my text to speech functionality 
 function guid() {
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
         s4() + '-' + s4() + s4() + s4();
