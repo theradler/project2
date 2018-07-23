@@ -42,7 +42,7 @@ function socketListen(socket) {
 //add channel emit event, sends new channels to server for distribution
 function socketAddChannel(socket) {
     var channels = addChannel();
-    socket.emit("addChannel", { 'channels': channels }); 
+    socket.emit("addChannel", { 'channels': channels });
 }
 //add messages emit event, sends new messages to server for distribution 
 function socketSendMessage(socket) {
