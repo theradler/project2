@@ -15,7 +15,7 @@ function logoutUsername() {
     localStorage.removeItem("username");
     //renders the username login button so user can reaccess site 
     renderNewUserNameButton();
-     //updates the tool tip on the message post to a more accurate instruction
+    //updates the tool tip on the message post to a more accurate instruction
     disablePostMessageButton("Please login in order to send messages");
 
 }
@@ -35,16 +35,16 @@ function renderNewUserNameButton() {
     document.getElementById("username").innerHTML = '';
     document.getElementById("username").appendChild(input);
     document.getElementById("username").appendChild(button);
-    
+
 }
 
 function renderKnownUser() {
     //gets and sets some strings and info we will need 
     var username = localStorage.getItem("username");
-    var Message = "Hello " + username + " Welcome to Chat"; 
+    var Message = "Hello " + username + " Welcome to Chat";
     //creates constants for html elements & sets attributes
     const usernameMessage = document.createElement('h1');
-    const button = document.createElement('button'); 
+    const button = document.createElement('button');
     button.setAttribute("type", "button");
     button.setAttribute("class", "btn btn-outline-light");
     button.setAttribute("onclick", "logoutUsername()");
@@ -55,6 +55,6 @@ function renderKnownUser() {
     document.getElementById("username").innerHTML = '';
     document.getElementById("username").appendChild(usernameMessage);
     document.getElementById("username").appendChild(button);
-    
+
 }
 

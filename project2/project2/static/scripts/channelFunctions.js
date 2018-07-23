@@ -74,8 +74,8 @@ function boldDefaultChannel() {
 function isNullOrEmpty(string) {
     var result = true;
     if (string) {
-        if (typeof (value) == 'string') {
-            if (value.length > 0)
+        if (typeof (string) == 'string') {
+            if (string.length > 0)
                 result = false;
         }
     }
