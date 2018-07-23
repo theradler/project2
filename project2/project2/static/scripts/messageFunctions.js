@@ -9,8 +9,6 @@ function messageJsonBuilder(channel, user, message) {
 
 }
 
-
-
 function SubmitNewMessage() {
     console.log("submitting new message");
     localStorage.setItem("currentChannel", "General");
@@ -95,4 +93,15 @@ function returnFormattedDateTime(UNIX_timestamp) {
     var sec = a.getSeconds();
     var time = date + ' ' + month + ' ' + hour + ':' + min + ':' + sec;
     return time;
+}
+
+function disablePostMessageButton(tooltip) {
+    document.getElementById("messagePostButton").disabled = true;
+    document.getElementById("messagePostButton").setAttribute("title", tooltip);
+}
+
+function enablePostMessageButton() {
+    document.getElementById("messagePostButton").disabled = false;
+    document.getElementById("messagePostButton").removeAttribute('title');
+
 }

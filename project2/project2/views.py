@@ -6,24 +6,27 @@ from datetime import datetime
 from flask import render_template, jsonify
 from project2 import app, socketio, channel_list
 from project2.forms import localUserName
-from flask_socketio import emit, send, SocketIO
+from flask_socketio import emit, send
+import sys
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    form = localUserName()
-    return render_template('index.html',form=form)
+    return render_template('index.html')
 
-@socketio.on('connect')
-def test_connect():
-    print(channel_list);
+
+@socketio.on('client_connected')
+def handle_client_connect_event(json):
+     print("client connected",file=sys.stderr)
+     emit('load_channels', {'channels': channel_list})
+
+@socketio.on('loadFromPython')
+def loadFromPython():
     emit('load_channels', {'channels': channel_list})
-    emit('default_channel', {'default_channel': channel_list[0]})
-
 
 @socketio.on('addChannel')
-def addChannel(data):
-    print("We got a message")
-    emit('loadChannel',"loading channel from server")
+def addChannel(channels):
+    print("Client has made channel update request")
+    emit('newChannelAdded', {'channels': channels }, broadcast=True)
 
 @socketio.on('addMessage')
 def addMessage():

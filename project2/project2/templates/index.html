@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -10,17 +10,29 @@
 <script type="text/javascript" src="../static/scripts/channelFunctions.js"></script>
 <script type="text/javascript" src="../static/scripts/usernameFunction.js"></script>
 <script type="text/javascript">
-    function init() {
-        //var socket = socketInit()
-        //socketIOLoad(socket);
-        loadUsername()
-        getChannelsAjax();
+    var socket = socketInit();
+
+    var init = function (socket) {
+        socketListen(socket);
+        if (localStorage.getItem('username')) {
+            renderKnownUser();
+        }
+        else {
+            renderNewUserNameButton();
+            disablePostMessageButton("Please login in order to send messages");
+        }
+        //loadUsername()
+        //getChannelsAjax();
         //socketLoadChannel(socket);
         //socketAddChannel(socket);
         //InsertTestMessage();
-        getMessagesAjax();
+        //getMessagesAjax();
+        document.getElementById("addChannelButton").addEventListener('click', () => { socketAddChannel(socket) });
 
-    }
+    };
+    document.addEventListener('DOMContentLoaded', function () {
+        init(socket);
+    });
 </script>
 
 
@@ -34,35 +46,36 @@
 <body>
     <div data-role="page">
         <div data-role="main" class="ui-content">
-        <div class="container-fluid" style="height:100vh">
-            <div class="row">
-                <div class="col-xs-2 sidebar" id="channelSection">
-                    <div class="affix">
-                        <h1>Channels: </h1>
-                        <form id="new_channel_form">
-                            <input type="text" id="channel_input_field">
-                            <input type="button" id="addChannelButton" value="Add Channel" />
-                        </form>
-                        <ul id="channelList"></ul>
+            <div class="container-fluid" style="height:100vh">
+                <div class="row">
+                    <div class="col-xs-2 sidebar" id="channelSection">
+                        <div class="affix">
+                            <h1>Channels: </h1>
+                            <form id="new_channel_form">
+                                <input type="text" id="channel_input_field">
+                                <input type="button" id="addChannelButton" value="Add Channel" />
+                            </form>
+                            <ul id="channelList"></ul>
+                        </div>
                     </div>
-                </div>
-                <div class="col w-75" id="messageDiv">
-                    <div id="messages"  style="padding-bottom:10px;">
+                    <div class="col w-75" id="messageDiv">
+                        <div id="messages" style="padding-bottom:10px;">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-            </div>
         <br />
         <div id="messengerBar" data-role="footer" data-position="fixed">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col" id="username">
-                        username section
+                        <!--<input type="text" id="usernameEnterField" />-->
+                        <!--<button type="button" class="btn btn-outline-light" onclick="saveUserName()">Submit Username</button>-->
                     </div>
                     <div class="col" id="messageSection">
                         <input type="text" id="messagePostField" />
-                        <button type="button" class="btn btn-outline-light" onclick="SubmitNewMessage()">Send</button>
+                        <button type="button" class="btn btn-outline-light" onclick="SubmitNewMessage()" id="messagePostButton">Post a Message</button>
                     </div>
                 </div>
             </div>

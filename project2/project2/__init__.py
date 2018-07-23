@@ -9,6 +9,8 @@ from flask_socketio import SocketIO
 
 app = Flask(__name__)
 socketio = SocketIO(app)
+socketio.debug=True
+socketio.logger=True
 
 app.config.update(dict(
     SECRET_KEY="powerful secretkey",
@@ -17,7 +19,7 @@ app.config.update(dict(
 
 
 # list of all channels
-channel_list = ['general']
+channel_list = ['general','chat','random','status']
 
 
 import project2.views 

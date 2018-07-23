@@ -1,16 +1,12 @@
 function addChannel() {
     console.log("Adding Channel Button pressed");
     var newChannel = document.getElementById("channel_input_field").value
-    //do some validation here
     //get current channels
     var channel = JSON.parse(localStorage.getItem("channelList"));
     //add new channel to list of channels
     channel.push(document.getElementById("channel_input_field").value)
-    //set local storage variable to channel list
-    localStorage.setItem("channelList", JSON.stringify(channel))
-    //reload channels via AJAX call
-    getChannelsAjax();
-
+    //return channel list for socket io to send to server 
+    return channel
 }
 
 function selectCurrentChannel(attribute) {
@@ -26,4 +22,21 @@ function selectCurrentChannel(attribute) {
 
 function filterByChannel(channel, messageList) {
     return messageList.filter(message => message.channel == channel);
+}
+
+function renderChannels() {
+    var channels = JSON.parse(localStorage.getItem("channelList"));
+    document.getElementById('channelList').innerHTML = '';
+        for (i = 0; i < channels.length; i++) {
+            var li = document.createElement('li');
+            var p = document.createElement('p');
+            var linkText = document.createTextNode(channels[i]);
+            p.appendChild(linkText);
+            p.id = ("channel-selector" + i);
+            p.setAttribute("class", "channelLink")
+            p.setAttribute("data-value", channels[i])
+            p.setAttribute("onclick", "selectCurrentChannel(this)");
+            li.appendChild(p);
+            document.getElementById("channelList").appendChild(li);
+    }
 }
