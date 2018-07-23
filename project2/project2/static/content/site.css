@@ -5,9 +5,12 @@ body {
     min-height: 100vh;
     clear: both;
 }
-#channelList{
+#channelList {
     list-style-type: none;
     font-family: Lucida Sans Unicode;
+    padding-left: 5px;
+    text-transform: uppercase;
+    font-size: 16px;
 }
 /* Set padding to keep content from hitting the edges */
 .body-content {
