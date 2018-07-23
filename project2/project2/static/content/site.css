@@ -1,12 +1,44 @@
 body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+    border: 1px solid transparent;
 }
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+}
+
+.media {
+    background-color: snow;
+    border-radius: 25px;
+    border: 2px solid #ff6a00;
+    padding: 20px;
+    padding: 20px;
+    }
+#messengerBar {
+    height: 20px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    background-color: gray;
+    
+    
+}
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+}
+
+#messageDiv {
+    height:100vh;
 }
 
 /* Set width on the form input elements since they're 100% wide by default */

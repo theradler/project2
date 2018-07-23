@@ -7,248 +7,24 @@
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
-<script src="../functions.js" type="text/javascript"></script>
+<script type="text/javascript" src="../static/scripts/socketio.js"></script>
+<script type="text/javascript" src="../static/scripts/ajaxFunctions.js"></script>
+<script type="text/javascript" src="../static/scripts/messageFunctions.js"></script>
+<script type="text/javascript" src="../static/scripts/channelFunctions.js"></script>
+<script type="text/javascript" src="../static/scripts/usernameFunction.js"></script>
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', init)
-
-
-
     function init() {
-        const socket = socketInit()
-        socketIOLoad(socket);
+       // var socket = socketInit()
+        //socketIOLoad(socket);
         loadUsername()
         getChannelsAjax();
-        socketLoadChannel(socket);
-        socketAddChannel(socket);
+        //socketLoadChannel(socket);
+        //socketAddChannel(socket);
         //InsertTestMessage();
-        //getMessagesAjax();
-
-        //getMessages();
-        //establishUserProfile();
-        //channelController()
-    }
-
-    //function establishUserProfile() {
-    //    const modal = document.getElementById("loginModal");
-    //    modal.style.display = "block";
-
-    //}
-
-
-    function addChannel() {
-        console.log("Adding Channel Button pressed");
-        var newChannel = document.getElementById("channel_input_field").value
-        //do some validation here 
-        //get current channels 
-        var channel = JSON.parse(localStorage.getItem("channelList"));
-        //add new channel to list of channels
-        channel.push(document.getElementById("channel_input_field").value)
-        //set local storage variable to channel list 
-        localStorage.setItem("channelList", JSON.stringify(channel))
-        //reload channels via AJAX call 
-        getChannelsAjax();
-
-    }
-
-    function socketLoadChannel(socket) {
-      socket.on('loadChannel', response => {
-            console.log("Recieved Ping From Server that will load messages")
-        })
-    }
-
-    function socketAddChannel(socket) {
-        console.log(socket);
-        document.getElementById("addChannelButton").addEventListener('click', function () {
-            console.log("socket fire")
-            socket.emit('addChannel', { 'data': 'data' })
-                }); 
-        
-    }
-
-    function loadUsername() {
-        if (localStorage.getItem("username") != null) {
-            document.getElementById("username").innerHTML = localStorage.getItem("username")
-        }
-    }
-
-    function saveUserName() {
-        localStorage.setItem("username", document.getElementById("username_field").value)
-        document.getElementById("localMem").innerHTML = localStorage.getItem("username")
-
-    }
-
-    function getChannelsAjax() {
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("channelList").innerHTML=
-                    "loaded by Ajax";
-
-
-            }
-        };
-        xhttp.open("GET", "/", true);
-        xhttp.send();
-    }
-
-    //function getChannelsAjax() {
-    //    var xHttpRequest = new XMLHttpRequest();
-    //    xHttpRequest.onreadystatechange = ()=> {
-    //        if (xHttpRequest.readyState == 4 && xHttpRequest.status == 200) {
-    //            var channel = JSON.parse(localStorage.getItem("channelList"));
-    //            document.getElementById("channelList").innerHTML = '';
-    //            for (i = 0; i < channel.length; i++) {
-    //                var li = document.createElement('li');
-    //                var p = document.createElement('p');
-    //                var linkText = document.createTextNode(channel[i]);
-    //                p.appendChild(linkText);
-    //                p.id = ("channel-selector" + i);
-    //                p.setAttribute("class", "channelLink")
-    //                p.setAttribute("data-value", channel[i])
-    //                p.setAttribute("onclick", "selectCurrentChannel(this)");
-    //                li.appendChild(p);
-    //                document.getElementById("channelList").appendChild(li);
-    //            }
-    //        }
-    //    };
-    //    xHttpRequest.open('GET', '/', true);
-    //    xHttpRequest.send();
-
-    //}
-
-    function getMessagesAjax() {
-        var xHttpRequest = new XMLHttpRequest();
-        xHttpRequest = () => {
-            if (xHttpRequest.readyState == XMLHttpRequest.DONE && xHttpRequest.status == 200) {
-                var messages = JSON.parse(localStorage.getItem("messageList"));
-                document.getElementById("messages").innerHTML = '';
-                for (i = 0; i < messages.length; i++) {
-                    renderMessages(messages[i].message);
-                }
-            }
-        }
-    }
-
-    function selectCurrentChannel(attribute) {
-        var channelLink = document.getElementsByClassName("channelLink");
-
-        for (var i = 0; i < channelLink.length; i++) {
-            document.getElementById(channelLink[i].style.fontWeight = "normal");
-        }
-        document.getElementById(attribute.id).style.fontWeight = "bold";
-        localStorage.setItem("currentChannel", attribute.dataset.value);
-    };
-
-
-    function messageJsonBuilder(channel, user, message) {
-        var messageObject = {};
-        messageObject.channel = channel;
-        messageObject.user = user;
-        messageObject.timestamp = new Date().getTime();
-        messageObject.message = message;
-        return messageObject;
-
-    }
-
-    function messageSender(channel, user, message) {
-        var newMessage = messageJsonBuilder(channel = channel, user = user, message = message);
-        var messageList = []
-        messageList = localStorage.getItem("messageList");
-        if (messageList != null) {
-            messageList = JSON.parse(localStorage.getItem("messageList"));
-        } else {
-            messageList = [];
-        }
-        messageList = apply100Limit(messageList, newMessage.channel);
-        messageList.push(newMessage);
-        localStorage.setItem("messageList", JSON.stringify(messageList));
-
-    }
-
-    function SubmitNewMessage() {
-        var newMessageText = document.getElementById("messagePostField").value
-        var currentUser = localStorage.getItem("username");
-        var currentChannel = localStorage.getItem("currentChannel");
-        messageSender(currentChannel, currentUser, newMessageText);
         getMessagesAjax();
-    }
-
-    function apply100Limit(messageList, channel) {
-        return messageList;
-    }
-
-    function InsertTestMessage() {
-        for (i = 0; i < 10; i++) {
-            messageSender("General", "Admin", "Cool Beans Message Man");
-        }
-    }
-
-    function filterByChannel(channel, messageList) {
-        return messageList.filter(message => message.channel == channel);
-    }
-
-
-
-
-    function getMessages() {
-        var channel = localStorage.getItem("currentChanel");
-        var messageList = localStorage.getItem("messageList")
-        if (messageList != null) {
-            messageList = JSON.parse(messageList);
-        }
-        messageList = filterByChannel(channel, messageList);
-        for (messageKey in messageList) {
-            console.log(messageList[messageKey].message)
-            renderMessages(messageList[messageKey].message)
-        }
 
     }
-
-
-    //function addMessage() {
-    //    var channel = "General";
-    //    var inputMessage = "New Message"
-    //    var messageXChannel = JSON.parse(localStorage.getItem("messageXChannel"));
-    //    var channelMessages = messageXChannel.filter((messageXChannel) => { return messageXChannel.channel == channel });
-    //    localStorage.setItem("temp", JSON.stringify(channelMessages));
-    //}
-
-    function renderMessages(message) {
-        const post = document.createElement('div');
-        const innerMessage = document.createElement('div');
-        post.setAttribute("class", "media");
-        innerMessage.setAttribute("class", "media-body");
-        innerMessage.innerHTML = message;
-        innerMessage.id = 'message';
-        post.appendChild(innerMessage);
-        document.querySelector('#messages').append(post);
-    }
-
-    function socketInit() {
-        return io.connect('http://' + document.domain + ':' + location.port);
-    }
-
-    function sendAddChannel(socket) {
-        console.log("hello World");
-        //socket.emit("addChannel", { 'data': 'stuff from client' })
-    }
-
-    function socketIOLoad(socket) {
-        socket.on('load_channels', response => {
-            if (!(localStorage.getItem("channelList"))) {
-                localStorage.setItem("channelList", JSON.stringify(response.channels))
-            }
-        });
-        socket.on('default_channel', response => {
-            if (!(localStorage.getItem("currentChannel"))) {
-                localStorage.setItem("currentChannel", response.default_channel)
-            }
-        });
-    }
-
-
-
-
 </script>
 
 
@@ -261,9 +37,9 @@
 
 <body>
     </div>
-    <div class="container-fluid">
+    <div class="container-fluid" style="height:100vh">
         <div class="row">
-            <div class="col-xs-2 sidebar" style="background-color:red;" id="channelSection">
+            <div class="col-xs-2 sidebar" id="channelSection">
                 <div class="affix">
                     <h1>Channels: </h1>
                     <form id="new_channel_form">
@@ -273,32 +49,12 @@
                     <ul id="channelList"></ul>
                 </div>
             </div>
-            <div class="col w-75" style="background-color:blue;">
+            <div class="col w-75" id="messageDiv">
                 <div id="messages">
                 </div>
             </div>
         </div>
     </div>
-    <!--<form>
-            Username: <br>
-            <input type="text" id="username_field">
-        </form>
-        <button onclick="saveUserName()">Submit Username</button>
-        <div>
-            <h1>Username: </h1>
-            <h2 id="localMem"></h2>
-        </div>
-        <div id="demo">
-            <button type="button" onclick="InsertTestMessage()">Make Ajax Request</button>
-            <button type="button" onclick="getMessages()">Get Messages</button>
-            <br />
-            <input type="text" id="message_post_field" />
-            <button type="button" onclick="SubmitNewMessage()">Add Messages</button>
-        </div>
-        <div id="ajaxReturnArea">
-
-        </div>-->
-    <!-- Messenger Bar -->
     <div id="messengerBar">
         <div class="container-fluid">
             <div class="row">
