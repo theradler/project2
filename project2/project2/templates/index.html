@@ -21,12 +21,7 @@
             renderNewUserNameButton();
             disablePostMessageButton("Please login in order to send messages");
         }
-        //loadUsername()
-        //getChannelsAjax();
-        //socketLoadChannel(socket);
-        //socketAddChannel(socket);
-        //InsertTestMessage();
-        //getMessagesAjax();
+        displayMessages();
         document.getElementById("addChannelButton").addEventListener('click', () => { socketAddChannel(socket) });
         document.getElementById("messagePostButton").addEventListener('click', () => { socketSendMessage(socket) });
 

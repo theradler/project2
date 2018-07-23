@@ -41,3 +41,12 @@ function renderChannels() {
             document.getElementById("channelList").appendChild(li);
     }
 }
+function boldDefaultChannel() {
+    var channelLink = document.getElementsByClassName("channelLink");
+    for (var i = 0; i < channelLink.length; i++) {
+        if (channelLink[i].dataset.value == localStorage.getItem('currentChannel')) {
+            document.getElementById(channelLink[i].id).style.fontWeight = "bold";
+        }
+    }
+  
+};

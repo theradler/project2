@@ -12,8 +12,11 @@ function socketListen(socket) {
     socket.on('load_channels', response => {
         console.log("setting channel list");
         localStorage.setItem('channelList', JSON.stringify(response.channels));
-        localStorage.setItem('currentChannel', response.channels[0]);
+        if (!localStorage.getItem('currentChannel')) {
+            localStorage.setItem('currentChannel', response.channels[0]);
+        }
         renderChannels();
+        boldDefaultChannel();
     });
 
     socket.on('newChannelAdded', response => {

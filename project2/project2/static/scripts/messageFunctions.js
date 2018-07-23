@@ -15,7 +15,7 @@ function getNewMessage() {
     var currentUser = localStorage.getItem("username");
     var currentChannel = localStorage.getItem("currentChannel");
     return messageSender(currentChannel, currentUser, newMessageText);
- }
+}
 
 function messageSender(channel, user, message) {
     var newMessage = messageJsonBuilder(channel = channel, user = user, message = message);
@@ -28,7 +28,7 @@ function messageSender(channel, user, message) {
     }
     messageList = apply100Limit(messageList, newMessage.channel);
     messageList.push(newMessage);
-    return messageList; 
+    return messageList;
 
 }
 function apply100Limit(messageList, channel) {
@@ -75,41 +75,59 @@ function renderMessages(message) {
 function displayMessages() {
     var messages = JSON.parse(localStorage.getItem("messageList"));
     var currentChannel = localStorage.getItem("currentChannel");
-    var messages = messages.filter(messages => {
-        return messages.channel == currentChannel; 
-    })
-    console.log(messages);
     document.getElementById("messages").innerHTML = '';
     if (messages == null) {
-        //display no message message
+        renderEmptyMessage();
     }
     else {
-        for (i = 0; i < messages.length; i++) {
-            renderMessages(messages[i]);
+        messages = messages.filter(messages => {
+            return messages.channel == currentChannel;
+        })
+        if (messages.length == 0) {
+            renderEmptyMessage();
         }
+        else {
+            for (i = 0; i < messages.length; i++) {
+                renderMessages(messages[i]);
+            }
+        }
+
     }
 }
 
-function returnFormattedDateTime(UNIX_timestamp) {
-    var a = new Date(UNIX_timestamp * 1000);
-    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    var year = a.getFullYear();
-    var month = months[a.getMonth()];
-    var date = a.getDate();
-    var hour = a.getHours();
-    var min = a.getMinutes();
-    var sec = a.getSeconds();
-    var time = date + ' ' + month + ' ' + hour + ':' + min + ':' + sec;
-    return time;
-}
 
-function disablePostMessageButton(tooltip) {
-    document.getElementById("messagePostButton").disabled = true;
-    document.getElementById("messagePostButton").setAttribute("title", tooltip);
-}
+    function renderEmptyMessage() {
+        var emptyMessages = document.createElement('h1');
+        var emptyMessageImage = document.createElement('img');
+        emptyMessageImage.setAttribute('src', "https://i.gifer.com/7TPK.gif");
+        emptyMessageImage.id = "emptyMessageImage";
+        emptyMessageImage.setAttribute('align', 'middle');
+        emptyMessages.id = "emptyMessagesMessage";
+        emptyMessages.appendChild(document.createTextNode("Looks like no one is home, be the first and get the conversation started"));
+        document.querySelector('#messages').append(emptyMessageImage);
+        document.querySelector('#messages').append(emptyMessages);
+    }
 
-function enablePostMessageButton() {
-    document.getElementById("messagePostButton").disabled = false;
-    document.getElementById("messagePostButton").removeAttribute('title');
+    function returnFormattedDateTime(UNIX_timestamp) {
+        var a = new Date(UNIX_timestamp * 1000);
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var year = a.getFullYear();
+        var month = months[a.getMonth()];
+        var date = a.getDate();
+        var hour = a.getHours();
+        var min = a.getMinutes();
+        var sec = a.getSeconds();
+        var time = date + ' ' + month + ' ' + hour + ':' + min + ':' + sec;
+        return time;
+    }
 
-}
+    function disablePostMessageButton(tooltip) {
+        document.getElementById("messagePostButton").disabled = true;
+        document.getElementById("messagePostButton").setAttribute("title", tooltip);
+    }
+
+    function enablePostMessageButton() {
+        document.getElementById("messagePostButton").disabled = false;
+        document.getElementById("messagePostButton").removeAttribute('title');
+
+    }
