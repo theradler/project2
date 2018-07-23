@@ -4,6 +4,7 @@ function socketInit() {
         socket.emit('client_connected', { data: 'new client connection' });
         console.log("Websocket connected");
     })
+    supersecret();
     return socket;
 }
 
