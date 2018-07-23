@@ -44,9 +44,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="project2\functions.js" />
+    <Content Include="project2\static\content\speaker.png" />
     <Content Include="project2\static\scripts\ajaxFunctions.js" />
     <Content Include="project2\static\scripts\channelFunctions.js" />
     <Content Include="project2\static\scripts\messageFunctions.js" />
+    <Content Include="project2\static\scripts\personalTouch.js" />
     <Content Include="project2\static\scripts\socketioFunctions.js" />
     <Content Include="project2\static\scripts\usernameFunction.js" />
     <Content Include="project2\templates\index.html" />
