@@ -1,4 +1,4 @@
-
+//message builder for json message objects 
 function messageJsonBuilder(channel, user, message) {
     var messageObject = {};
     messageObject.channel = channel;
@@ -10,7 +10,6 @@ function messageJsonBuilder(channel, user, message) {
 }
 
 function getNewMessage() {
-    console.log("submitting new message");
     var newMessageText = document.getElementById("messagePostField").value
     var currentUser = localStorage.getItem("username");
     var currentChannel = localStorage.getItem("currentChannel");
@@ -78,13 +77,13 @@ function renderMessages(message) {
     messagetext.appendChild(document.createTextNode(message.message));
     messagetext.id = ("message" + id);
     innerMessage.appendChild(messagetext);
-    
+
     //format username and append to inner Message
     username.setAttribute("class", "mt-0");
     username.appendChild(document.createTextNode(("From: " + message.user + " @ " + formattedTime)));
     innerMessage.appendChild(username);
 
-   
+
     //format inner message 
     innerMessage.setAttribute("class", "media-body");
     //format and add to post 
@@ -163,6 +162,10 @@ function validateMessage() {
         disablePostMessageButton("Please enter text in order to send message");
     }
 }
+//usefull function for just returning messages from a specific channels 
+function filterByChannel(channel, messageList) {
+    return messageList.filter(message => message.channel == channel);
+}
 
 function guid() {
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
@@ -174,3 +177,4 @@ function s4() {
         .toString(16)
         .substring(1);
 }
+
