@@ -1,4 +1,4 @@
-//message builder for json message objects 
+//message builder for json message objects, usefull to encapsulate 
 function messageJsonBuilder(channel, user, message) {
     var messageObject = {};
     messageObject.channel = channel;
@@ -8,18 +8,21 @@ function messageJsonBuilder(channel, user, message) {
     return messageObject;
 
 }
-
+//handler function that gathers neccessary info for socket functions 
 function getNewMessage() {
-    var newMessageText = document.getElementById("messagePostField").value
+    var newMessageText = document.getElementById("messagePostField").value;
     var currentUser = localStorage.getItem("username");
     var currentChannel = localStorage.getItem("currentChannel");
     return messageSender(currentChannel, currentUser, newMessageText);
 }
 
+//gathers list of current messages from local memory, handles the no message potential, adds new message to object that gets sent to server 
 function messageSender(channel, user, message) {
+    //builds message json 
     var newMessage = messageJsonBuilder(channel = channel, user = user, message = message);
-    var messageList = []
-    messageList = localStorage.getItem("messageList");
+    //init message list 
+    var messageList = localStorage.getItem("messageList");
+    //if we have messages get them, if not assume they are blank
     if (messageList != null) {
         messageList = JSON.parse(localStorage.getItem("messageList"));
     } else {
@@ -27,35 +30,26 @@ function messageSender(channel, user, message) {
     }
     messageList = apply100Limit(messageList, newMessage.channel);
     messageList.push(newMessage);
+    //return message list 
     return messageList;
 
 }
+//ensures that we can have no more that 100 messages per channel 
 function apply100Limit(messageList, channel) {
-    return messageList;
+    console.log(messageList)
+        ;    return messageList;
 }
 
-function InsertTestMessage() {
-    for (i = 0; i < 10; i++) {
-        messageSender("General", "Admin", "Cool Beans Message Man");
-    }
-}
+//function I created early to just throw messages into system so I could debug and style, still may be useful to you so leaving it 
+//function InsertTestMessage() {
+//    for (i = 0; i < 10; i++) {
+//        messageSender("General", "Admin", "Cool Beans Message Man");
+//    }
+//}
 
-function getMessages() {
-    var channel = localStorage.getItem("currentChanel");
-    var messageList = localStorage.getItem("messageList")
-    if (messageList != null) {
-        messageList = JSON.parse(messageList);
-    }
-    messageList = filterByChannel(channel, messageList);
-    for (messageKey in messageList) {
-        console.log(messageList[messageKey].message)
-        renderMessages(messageList[messageKey].message)
-    }
 
-}
-
+//bit of a beast and given more time would probably have tried to encapsulate more 
 function renderMessages(message) {
-
     //declaring elements of the message box
     const post = document.createElement('div');
     const innerMessage = document.createElement('div');
@@ -93,6 +87,7 @@ function renderMessages(message) {
     document.querySelector('#messages').append(post);
 }
 
+//for every message in memory on the current channel, this sucker will call the render function for them 
 function displayMessages() {
     var messages = JSON.parse(localStorage.getItem("messageList"));
     var currentChannel = localStorage.getItem("currentChannel");
@@ -116,7 +111,7 @@ function displayMessages() {
     }
 }
 
-
+//following slacks lead, added a page for "new messages" tumbleweeds are cool 
 function renderEmptyMessage() {
     var emptyMessages = document.createElement('h1');
     var emptyMessageImage = document.createElement('img');
@@ -129,6 +124,7 @@ function renderEmptyMessage() {
     document.querySelector('#messages').append(emptyMessages);
 }
 
+//Date time parser to get human readable dates 
 function returnFormattedDateTime(UNIX_timestamp) {
     var a = new Date(UNIX_timestamp * 1000);
     var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -142,11 +138,13 @@ function returnFormattedDateTime(UNIX_timestamp) {
     return time;
 }
 
+//utility for disabling the post message button and setting a tool tip 
 function disablePostMessageButton(tooltip) {
     document.getElementById("messagePostButton").disabled = true;
     document.getElementById("messagePostButton").setAttribute("title", tooltip);
 }
 
+//utlity for undoing everything the previous function does 
 function enablePostMessageButton() {
     document.getElementById("messagePostButton").disabled = false;
     document.getElementById("messagePostButton").removeAttribute('title');
