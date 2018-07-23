@@ -29,5 +29,6 @@ def addChannel(channels):
     emit('newChannelAdded', {'channels': channels }, broadcast=True)
 
 @socketio.on('addMessage')
-def addMessage():
-    emit("loadMessages","loading messages from server")
+def addMessage(messages):
+    print("Client has submitted a new message")
+    emit("newMessagePosted",{'messages' : messages }, broadcast=True)

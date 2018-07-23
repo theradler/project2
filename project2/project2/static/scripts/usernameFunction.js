@@ -1,9 +1,9 @@
 
-function loadUsername() {
-    if (localStorage.getItem("username") != null) {
-        document.getElementById("username").innerHTML = localStorage.getItem("username")
-    }
-}
+//function loadUsername() {
+//    if (localStorage.getItem("username") != null) {
+//        document.getElementById("username").innerHTML = localStorage.getItem("username")
+//    }
+//}
 
 function saveUsername() {
     var username = document.getElementById("usernameEnterField").value

@@ -9,25 +9,18 @@ function messageJsonBuilder(channel, user, message) {
 
 }
 
-function SubmitNewMessage() {
+function getNewMessage() {
     console.log("submitting new message");
-    localStorage.setItem("currentChannel", "General");
-    localStorage.setItem("username", "admin")
     var newMessageText = document.getElementById("messagePostField").value
     var currentUser = localStorage.getItem("username");
     var currentChannel = localStorage.getItem("currentChannel");
-    messageSender(currentChannel, currentUser, newMessageText);
-    console.log("AJAX Call");
-    getMessagesAjax();
-    console.log("Complete");
-}
+    return messageSender(currentChannel, currentUser, newMessageText);
+ }
 
 function messageSender(channel, user, message) {
     var newMessage = messageJsonBuilder(channel = channel, user = user, message = message);
     var messageList = []
-    console.log("Getting Messages");
     messageList = localStorage.getItem("messageList");
-    console.log("complete");
     if (messageList != null) {
         messageList = JSON.parse(localStorage.getItem("messageList"));
     } else {
@@ -35,9 +28,7 @@ function messageSender(channel, user, message) {
     }
     messageList = apply100Limit(messageList, newMessage.channel);
     messageList.push(newMessage);
-    console.log("sending to local storage");
-    localStorage.setItem("messageList", JSON.stringify(messageList));
-    console.log("complete");
+    return messageList; 
 
 }
 function apply100Limit(messageList, channel) {
@@ -81,6 +72,23 @@ function renderMessages(message) {
     document.querySelector('#messages').append(post);
 }
 
+function displayMessages() {
+    var messages = JSON.parse(localStorage.getItem("messageList"));
+    var currentChannel = localStorage.getItem("currentChannel");
+    var messages = messages.filter(messages => {
+        return messages.channel == currentChannel; 
+    })
+    console.log(messages);
+    document.getElementById("messages").innerHTML = '';
+    if (messages == null) {
+        //display no message message
+    }
+    else {
+        for (i = 0; i < messages.length; i++) {
+            renderMessages(messages[i]);
+        }
+    }
+}
 
 function returnFormattedDateTime(UNIX_timestamp) {
     var a = new Date(UNIX_timestamp * 1000);

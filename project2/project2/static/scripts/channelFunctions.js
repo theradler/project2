@@ -17,6 +17,7 @@ function selectCurrentChannel(attribute) {
     }
     document.getElementById(attribute.id).style.fontWeight = "bold";
     localStorage.setItem("currentChannel", attribute.dataset.value);
+    displayMessages();
 };
 
 

@@ -12,6 +12,7 @@ function socketListen(socket) {
     socket.on('load_channels', response => {
         console.log("setting channel list");
         localStorage.setItem('channelList', JSON.stringify(response.channels));
+        localStorage.setItem('currentChannel', response.channels[0]);
         renderChannels();
     });
 
@@ -20,9 +21,19 @@ function socketListen(socket) {
         console.log("render new channels");
         renderChannels();
     });
+
+    socket.on('newMessagePosted', response => {
+        localStorage.setItem("messageList", JSON.stringify(response.messages.messages));
+        displayMessages();
+    })
 }
 
 function socketAddChannel(socket) {
     var channels = addChannel();
     socket.emit("addChannel", { 'channels': channels }); 
+}
+
+function socketSendMessage(socket) {
+    var messages = getNewMessage();
+    socket.emit("addMessage", { 'messages': messages });
 }
