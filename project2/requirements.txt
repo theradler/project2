@@ -1,1 +1,5 @@
-Flask<1
+Flask
+flask_socketio
+datetime
+sys
+eventlet
