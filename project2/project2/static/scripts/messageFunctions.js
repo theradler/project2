@@ -96,7 +96,9 @@ function renderMessages(message) {
     //format and add to post 
     post.setAttribute("class", "media");
     post.appendChild(innerMessage);
-    post.appendChild(deleteButton);
+    if (message.user == localStorage.getItem('username')) {
+        post.appendChild(deleteButton);
+    }
     post.appendChild(speaker);
     document.querySelector('#messages').append(post);
 }
