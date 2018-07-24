@@ -31,9 +31,12 @@ function renderNewUserNameButton() {
     button.setAttribute("class", "btn btn-outline-light");
     button.setAttribute("onclick", "saveUsername()");
     button.appendChild(document.createTextNode("Submit Username"))
+    //creates break
+    const br = document.createElement('br');
     //cleatrs out div out puts new content in
     document.getElementById("username").innerHTML = '';
     document.getElementById("username").appendChild(input);
+    document.getElementById("username").appendChild(br);
     document.getElementById("username").appendChild(button);
 
 }
@@ -43,8 +46,10 @@ function renderKnownUser() {
     var username = localStorage.getItem("username");
     var Message = "Hello " + username + " Welcome to Chat";
     //creates constants for html elements & sets attributes
-    const usernameMessage = document.createElement('h1');
+    const usernameMessage = document.createElement('p');
     const button = document.createElement('button');
+    //creates break
+    const br = document.createElement('br');
     button.setAttribute("type", "button");
     button.setAttribute("class", "btn btn-outline-light");
     button.setAttribute("onclick", "logoutUsername()");
@@ -54,6 +59,7 @@ function renderKnownUser() {
     //clears out div and puts new content in
     document.getElementById("username").innerHTML = '';
     document.getElementById("username").appendChild(usernameMessage);
+    document.getElementById("username").appendChild(br);
     document.getElementById("username").appendChild(button);
 
 }

@@ -17,7 +17,7 @@ html {
 
 input[type="text"],
 select.form-control {
-    background: transparent;
+    background: white;
     border: none;
     border-bottom: 1px solid #000000;
     -webkit-box-shadow: none;
@@ -80,9 +80,22 @@ margin-top:5px;
     opacity: 0.5;
     filter: alpha(opacity=50);
 }
-
+#usernameMessage {
+    color: white;
+}
+#usernameEnterField {
+    margin-right: 5px;
+    margin-bottom: 5px;
+    width:100%;
+    max-width:500px;
+}
+#messagePostField {
+    margin-bottom: 5px;
+    width:100%;
+    max-width:500px;
+}
 #messageDiv {
-    height:100vh;
+    height: 100vh;
 }
 .speakerLink {
     height:35px;
