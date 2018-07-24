@@ -1,3 +1,5 @@
+
+
 body {
     border: 1px solid transparent;
     display: flex;
@@ -5,12 +7,40 @@ body {
     min-height: 100vh;
     clear: both;
 }
+img {
+    display:inline-block;
+}
+html {
+    /* for demo purposes only */
+    margin: 2em;
+}
+
+input[type="text"],
+select.form-control {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #000000;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-radius: 0;
+}
+
+    input[type="text"]:focus,
+    select.form-control:focus {
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+
+
 #channelList {
     list-style-type: none;
     font-family: Lucida Sans Unicode;
     padding-left: 5px;
     text-transform: uppercase;
     font-size: 16px;
+}
+#addChannelButton {
+margin-top:5px;
 }
 /* Set padding to keep content from hitting the edges */
 .body-content {

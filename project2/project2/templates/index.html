@@ -51,10 +51,11 @@
                         <div class="affix">
                             <h1>Channels: </h1>
                             <div id="alertSection"></div>
-                            <form id="new_channel_form">
-                                <input type="text" id="channel_input_field">
-                                <input type="button" id="addChannelButton" value="Add Channel" />
-                            </form>
+                            <div class="form-group" style="width:100%">
+                                <!--<label for="name" class="control-label">Add A Channel</label>-->
+                                <input type="text" name="name" class="form-control"  id="channel_input_field" >
+                                <button type="button" class="btn btn-outline-dark" id="addChannelButton">Add a Channel</button>
+                            </div>
                             <ul id="channelList"></ul>
                         </div>
                     </div>
