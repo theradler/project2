@@ -49,3 +49,7 @@ function socketSendMessage(socket) {
     var messages = getNewMessage();
     socket.emit("addMessage", { 'messages': messages });
 }
+
+function socketRemoveMessage(socket, messages) {
+    socket.emit("addMessage", { 'messages': messages });
+}

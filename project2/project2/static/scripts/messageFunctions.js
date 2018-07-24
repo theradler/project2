@@ -5,6 +5,7 @@ function messageJsonBuilder(channel, user, message) {
     messageObject.user = user;
     messageObject.timestamp = new Date().getTime();
     messageObject.message = message;
+    messageObject.guid = guid();
     return messageObject;
 
 }
@@ -14,6 +15,12 @@ function getNewMessage() {
     var currentUser = localStorage.getItem("username");
     var currentChannel = localStorage.getItem("currentChannel");
     return messageSender(currentChannel, currentUser, newMessageText);
+}
+
+function deleteMessage(object) {
+    var messages = JSON.parse(localStorage.getItem('messageList'));
+    messages = findAndRemove(messages, 'guid', object.id);
+    socketRemoveMessage(socket, messages);
 }
 
 //gathers list of current messages from local memory, handles the no message potential, adds new message to object that gets sent to server 
@@ -56,15 +63,21 @@ function renderMessages(message) {
     const username = document.createElement('H5');
     const speaker = document.createElement('img');
     const messagetext = document.createElement('p');
-
+    const deleteButton = document.createElement('img');
     //create unique id that will allow us to reference messasge 
-    var id = guid();
+    var id = message.guid;
     //create speaker link and add onclick and id 
     speaker.setAttribute("src", "../static/content/speaker.png");
     speaker.setAttribute('alt', 'speakerbox');
     speaker.setAttribute('class', 'speakerLink');
     speaker.setAttribute('onclick', 'speakText(this)')
     speaker.id = id;
+    //create delete message button /link 
+    deleteButton.setAttribute("src", "../static/content/xIcon.png")
+    deleteButton.setAttribute('alt', 'x icon');
+    deleteButton.setAttribute('class', 'speakerLink');
+    deleteButton.setAttribute('onclick', 'deleteMessage(this)')
+    deleteButton.id = id;
     //process timestamp
     var formattedTime = returnFormattedDateTime(message.timestamp);
     //format message & append to inner Message 
@@ -83,6 +96,7 @@ function renderMessages(message) {
     //format and add to post 
     post.setAttribute("class", "media");
     post.appendChild(innerMessage);
+    post.appendChild(deleteButton);
     post.appendChild(speaker);
     document.querySelector('#messages').append(post);
 }
@@ -175,5 +189,15 @@ function s4() {
     return Math.floor((1 + Math.random()) * 0x10000)
         .toString(16)
         .substring(1);
+}
+
+function findAndRemove(array, property, value) {
+    array.forEach(function (result, index) {
+        if (result[property] === value) {
+            //Remove from array
+            array.splice(index, 1);
+        }
+    });
+    return array;  
 }
 
