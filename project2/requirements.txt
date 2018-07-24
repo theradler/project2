@@ -1,5 +1,5 @@
 Flask
 flask_socketio
 datetime
-sys
 eventlet
+flask_wtf
