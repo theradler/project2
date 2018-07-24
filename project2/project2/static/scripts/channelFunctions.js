@@ -22,13 +22,30 @@ function addChannel() {
 }
 //alert message handler for channel, allows user to pass in message and creates generic danger boostrap alert in channel columns 
 function channelAlert(errorMessage) {
+    const span = document.createElement('span');
+    const button = document.createElement('button');
+    //set up close button 
+    button.setAttribute('type', 'button');
+    button.setAttribute('class', 'close');
+    button.setAttribute('data-dismiss', 'alert');
+    button.setAttribute('onclick','dismissAlert()')
+    //set up span
+    span.setAttribute('aria-hidden', 'true');
     document.getElementById('alertSection').innerHTML = '';
+    button.innerHTML = "&times;";
+    //create div
     var alert = document.createElement('div');
     alert.setAttribute('class', "alert alert-danger alert-dismissible");
     alert.setAttribute('role', 'alert');
     alert.setAttribute.id = "channelALert";
+    //alert.append(span);
+    alert.append(button);
     alert.appendChild(document.createTextNode(errorMessage));
     document.getElementById('alertSection').appendChild(alert);
+}
+
+function dismiessAlert() {
+    document.getElementById('alertSection').innerHTML = '';
 }
 
 //function that handles channel switching using the channel list, unbolds all channels, bolds new slected one, then updates local storage 
