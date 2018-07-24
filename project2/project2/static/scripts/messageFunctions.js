@@ -43,7 +43,10 @@ function messageSender(channel, user, message) {
 }
 //ensures that we can have no more that 100 messages per channel 
 function apply100Limit(messageList, channel) {
-    console.log(messageList)
+    messageList = filterByChannel(channel, messageList);
+    if ((messageList.length + 1) >= 100) {
+        messageList = messageList.shift();
+    }
         ;    return messageList;
 }
 

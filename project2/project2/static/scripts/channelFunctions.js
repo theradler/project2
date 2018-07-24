@@ -1,5 +1,6 @@
 function addChannel() {
-    var newChannel = document.getElementById("channel_input_field").value; 
+    var newChannel = document.getElementById("channel_input_field").value;
+    newChannel = newChannel.toLowerCase();
     document.getElementById("channel_input_field").value = '';
     //get current channels
     var channel = JSON.parse(localStorage.getItem("channelList"));
