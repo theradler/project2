@@ -1,6 +1,6 @@
 function addChannel() {
-    console.log("Adding Channel Button pressed");
-    var newChannel = document.getElementById("channel_input_field").value
+    var newChannel = document.getElementById("channel_input_field").value; 
+    document.getElementById("channel_input_field").value = '';
     //get current channels
     var channel = JSON.parse(localStorage.getItem("channelList"));
     //validate that the channel doesn't already exist or is empty
@@ -14,7 +14,7 @@ function addChannel() {
     }
     else {
         //add new channel to list of channels
-        channel.push(document.getElementById("channel_input_field").value)
+        channel.push(newChannel)
         //return channel list for socket io to send to server 
     }
     return channel
